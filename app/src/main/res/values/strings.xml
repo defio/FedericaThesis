@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">federica</string>
+
+    <string name="login.name">Nome</string>
+    <string name="login.surname">Cognome</string>
+    <string name="login.ok">Ok</string>
+</resources>
