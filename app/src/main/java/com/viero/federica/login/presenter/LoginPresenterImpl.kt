@@ -5,6 +5,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.viero.federica.base.View
+import com.viero.federica.database.Database
+import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.login.LoginContract
 import com.viero.federica.login.LoginContract.LoginPresenter
 import com.viero.federica.login.LoginContract.LoginView
@@ -47,11 +49,12 @@ class LoginPresenterImpl : LoginPresenter {
     override fun login() {
         println(User(userName!!, userSurname!!))
 
-        val database = FirebaseDatabase.getInstance().reference
         val userUUID = UUID.randomUUID().toString()
 
         Settings.set(SettingsKey.USER_ID, userUUID)
-        database.child("users").child(userUUID).setValue(User(userName!!, userSurname!!))
+        Database.getChild(DatabaseEntity.USERS)
+                .child(userUUID)
+                .setValue(User(userName!!, userSurname!!))
         view?.loginDone()
     }
 
