@@ -33,6 +33,8 @@ object Settings {
         }
     }
 
+    fun getString(key: SettingsKey): String? = sharedPreferences?.getString(SettingsKey.USER_ID.name, null)
+
 }
 
 enum class SettingsKey {

@@ -9,6 +9,8 @@ import com.viero.federica.login.LoginContract
 import com.viero.federica.login.LoginContract.LoginPresenter
 import com.viero.federica.login.LoginContract.LoginView
 import com.viero.federica.login.model.User
+import com.viero.federica.settings.Settings
+import com.viero.federica.settings.SettingsKey
 import java.security.InvalidParameterException
 import java.util.*
 
@@ -22,6 +24,7 @@ import java.util.*
  * @author Nicola De Fiorenze
  */
 class LoginPresenterImpl : LoginPresenter {
+
 
     var view: LoginView? = null
     var userName: String? = null
@@ -45,16 +48,17 @@ class LoginPresenterImpl : LoginPresenter {
         println(User(userName!!, userSurname!!))
 
         val database = FirebaseDatabase.getInstance().reference
-        database.child("users").child(UUID.randomUUID().toString()).setValue(User(userName!!, userSurname!!))
+        val userUUID = UUID.randomUUID().toString()
+
+        Settings.set(SettingsKey.USER_ID, userUUID)
+        database.child("users").child(userUUID).setValue(User(userName!!, userSurname!!))
+        view?.loginDone()
     }
 
-    override fun attachView(view: View) {
-        if (view is LoginView) {
-            this.view = view
-            checkOkButtonStatus()
-        } else {
-            throw InvalidParameterException("Invalid View for LoginPresenter")
-        }
+
+    override fun attachView(view: LoginView) {
+        this.view = view
+        checkOkButtonStatus()
     }
 
     override fun deattachView() {

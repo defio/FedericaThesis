@@ -1,11 +1,16 @@
 package com.viero.federica.login.view
 
+import android.support.v4.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
+import com.viero.federica.MainActivity
 import com.viero.federica.R
+import com.viero.federica.commons.start
+import com.viero.federica.home.view.HomeActivity
+import com.viero.federica.login.LoginContract.LoginView
 import com.viero.federica.login.presenter.LoginPresenterImpl
 
 /**
@@ -17,7 +22,7 @@ import com.viero.federica.login.presenter.LoginPresenterImpl
  *
  * @author Nicola De Fiorenze
  */
-class LoginFragment : android.support.v4.app.Fragment(), com.viero.federica.login.LoginContract.LoginView {
+class LoginFragment : Fragment(), LoginView {
 
     var okButton: Button? = null
 
@@ -72,6 +77,11 @@ class LoginFragment : android.support.v4.app.Fragment(), com.viero.federica.logi
 
     override fun setOkButtonEnabled(isEnabled: Boolean) {
         okButton?.isEnabled = isEnabled
+    }
+
+    override fun loginDone() {
+        activity.finish()
+        activity.start(HomeActivity::class.java)
     }
 
 }

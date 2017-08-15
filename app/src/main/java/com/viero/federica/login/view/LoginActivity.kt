@@ -1,6 +1,11 @@
 package com.viero.federica.login.view
 
+import android.app.Activity
+import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.viero.federica.R
+import com.viero.federica.commons.hideActionBar
+import com.viero.federica.commons.pushFragment
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -12,5 +17,16 @@ import android.support.v7.app.AppCompatActivity
  * @author Nicola De Fiorenze
  */
 class LoginActivity : AppCompatActivity(){
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        hideActionBar()
+
+        if (savedInstanceState == null) {
+            pushFragment(R.id.container, LoginFragment.newInstance())
+        }
+    }
 
 }

@@ -1,4 +1,6 @@
-package com.viero.federica.base
+package com.viero.federica.home.view
+
+import android.support.v7.app.AppCompatActivity
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -9,8 +11,4 @@ package com.viero.federica.base
  *
  * @author Nicola De Fiorenze
  */
-
-interface Presenter<in T: View> {
-    fun attachView(view: T)
-    fun deattachView()
-}
+class HomeActivity : AppCompatActivity()

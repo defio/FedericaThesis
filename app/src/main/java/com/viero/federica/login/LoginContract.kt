@@ -15,9 +15,10 @@ import com.viero.federica.base.View
 interface LoginContract {
     interface LoginView : View {
         fun setOkButtonEnabled(isEnabled: Boolean)
+        fun loginDone()
     }
 
-    interface LoginPresenter : Presenter {
+    interface LoginPresenter : Presenter<LoginView> {
         fun newName(string: String)
         fun newSurname(string: String)
         fun login()
