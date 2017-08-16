@@ -10,6 +10,9 @@ import com.viero.federica.home.HomeContract.HomeView
 import com.viero.federica.home.adapter.FoodsAdapter
 import com.viero.federica.home.listener.IntakeListener
 import com.viero.federica.home.presenter.HomePresenterImpl
+import kotlinx.android.synthetic.main.home_fragment.view.*
+import org.joda.time.DateTime
+import java.util.*
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -31,6 +34,7 @@ class HomeFragment : Fragment(), HomeView {
     companion object {
         fun newInstance() = HomeFragment()
     }
+
     private val presenter: HomePresenter by lazy { getHomePresenter() }
 
     private fun getHomePresenter(): HomePresenter = HomePresenterImpl()
@@ -40,8 +44,18 @@ class HomeFragment : Fragment(), HomeView {
         presenter.attachView(this)
 
 
+        val endDate = Calendar.getInstance()
+        endDate.add(Calendar.MONTH, 1)
+
+        val datePicker = rootView.datePicker
+        datePicker
+                .setListener { dateSelected -> presenter.changeDate(dateSelected) }
+                .init()
+        datePicker.setDate(DateTime.now())
+
+
         val recyclerView = rootView.findViewById(R.id.recycler_view) as RecyclerView
-        recyclerView.layoutManager = GridLayoutManager(activity,2,GridLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         recyclerView.adapter = foodsAdapter
 
         presenter.fetchFoods()

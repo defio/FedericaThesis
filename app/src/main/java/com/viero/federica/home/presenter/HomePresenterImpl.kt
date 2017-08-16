@@ -10,8 +10,8 @@ import com.viero.federica.database.model.Food
 import com.viero.federica.home.HomeContract
 import com.viero.federica.home.HomeContract.HomePresenter
 import com.viero.federica.settings.Settings
-import java.text.SimpleDateFormat
-import java.util.*
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -23,6 +23,8 @@ import java.util.*
  * @author Nicola De Fiorenze
  */
 class HomePresenterImpl : HomePresenter {
+    var currentDate : DateTime = DateTime.now()
+
 
     var view: HomeContract.HomeView? = null
     var foods: MutableMap<String, Pair<Food, Int?>> = mutableMapOf()
@@ -53,7 +55,7 @@ class HomePresenterImpl : HomePresenter {
                 foods.remove(newKey)
             }
             if (newKey != null) {
-                Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, Date().today(),
+                Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
                         newKey).addListenerForSingleValueEvent(
                         object : ValueEventListener {
                             override fun onCancelled(databaseError: DatabaseError?) {
@@ -99,10 +101,15 @@ class HomePresenterImpl : HomePresenter {
     }
 
     override fun fetchFoods() {
+        Database.getChild(DatabaseEntity.FOODS).removeEventListener(eventListener)
         Database.getChild(DatabaseEntity.FOODS).addChildEventListener(eventListener)
+    }
 
+    override fun changeDate(dateSelected: DateTime) {
+        currentDate = dateSelected
+        fetchFoods()
     }
 }
 
-private fun Date.today() = SimpleDateFormat("dd-MM-yyyy", Locale.ITALIAN).format(this)
+private fun DateTime.format() =  DateTimeFormat.forPattern("dd-MM-yyyy").print(this)
 

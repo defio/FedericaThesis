@@ -3,6 +3,7 @@ package com.viero.federica.home
 import com.viero.federica.base.Presenter
 import com.viero.federica.base.View
 import com.viero.federica.database.model.Food
+import org.joda.time.DateTime
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -21,5 +22,6 @@ interface HomeContract {
 
     interface HomePresenter : Presenter<HomeView> {
         fun fetchFoods()
+        fun changeDate(dateSelected: DateTime)
     }
 }
