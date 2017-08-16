@@ -23,5 +23,6 @@ interface HomeContract {
     interface HomePresenter : Presenter<HomeView> {
         fun fetchFoods()
         fun changeDate(dateSelected: DateTime)
+        fun  updateQuantity(value: Int, foodKey: String)
     }
 }

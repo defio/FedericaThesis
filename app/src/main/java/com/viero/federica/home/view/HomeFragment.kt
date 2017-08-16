@@ -27,7 +27,7 @@ class HomeFragment : Fragment(), HomeView {
 
     val foodsAdapter = FoodsAdapter(object : IntakeListener {
         override fun updateQuantity(value: Int, foodKey: String) {
-            println("new quantity $value for $foodKey")
+            presenter.updateQuantity(value,foodKey)
         }
     })
 
@@ -70,7 +70,5 @@ class HomeFragment : Fragment(), HomeView {
     override fun updateFoods(foods: MutableMap<String, Pair<Food, Int?>>) {
         foodsAdapter.setDataSet(foods)
         foodsAdapter.notifyDataSetChanged()
-        println("---------------------")
-        println(foods)
     }
 }

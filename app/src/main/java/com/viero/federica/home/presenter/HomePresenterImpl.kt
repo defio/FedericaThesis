@@ -23,8 +23,8 @@ import org.joda.time.format.DateTimeFormat
  * @author Nicola De Fiorenze
  */
 class HomePresenterImpl : HomePresenter {
-    var currentDate : DateTime = DateTime.now()
 
+    var currentDate : DateTime = DateTime.now()
 
     var view: HomeContract.HomeView? = null
     var foods: MutableMap<String, Pair<Food, Int?>> = mutableMapOf()
@@ -108,6 +108,10 @@ class HomePresenterImpl : HomePresenter {
     override fun changeDate(dateSelected: DateTime) {
         currentDate = dateSelected
         fetchFoods()
+    }
+
+    override fun updateQuantity(value: Int, foodKey: String) {
+        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(), foodKey).setValue(value)
     }
 }
 
