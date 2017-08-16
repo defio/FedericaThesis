@@ -15,6 +15,10 @@ import java.security.InvalidParameterException
  */
 object Database {
 
+    init {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+    }
+
     private val firebase = FirebaseDatabase.getInstance().reference
 
     fun getChild(entity: DatabaseEntity): DatabaseReference = firebase.child(entity.schemaName)
@@ -29,9 +33,7 @@ object Database {
         }.joinToString(separator = "/")
 
         return firebase.child(pathToChild)
-
     }
-
 }
 
 enum class DatabaseEntity(val schemaName: String) {
