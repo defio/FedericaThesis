@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.viero.federica.R
 import com.viero.federica.database.model.Food
+import com.viero.federica.home.listener.IntakeListener
 import kotlinx.android.synthetic.main.food_card.view.*
 
 /**
@@ -19,14 +20,30 @@ import kotlinx.android.synthetic.main.food_card.view.*
  *
  * @author Nicola De Fiorenze
  */
-class FoodsAdapter : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
+class FoodsAdapter(val intakeListener: IntakeListener) : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
     private var foods: MutableMap<String, Food> = mutableMapOf()
 
     override fun onBindViewHolder(holder: FoodsAdapter.FoodViewHolder, position: Int) {
-        val food = foods.values.toList()[position]
+        val foodEntry = foods.entries.toList()[position]
 
-        holder.foodNameTextView.text = food.name
-        holder.cardView.setCardBackgroundColor(Color.parseColor(food.color))
+        holder.foodNameTextView.text = foodEntry.value.name
+        holder.cardView.setCardBackgroundColor(Color.parseColor(foodEntry.value.color))
+        holder.minusButton.setOnClickListener {
+            val oldQuantity = holder.counterTextView.text.toString().toInt()
+            var newQuantity = oldQuantity - 1
+            if (newQuantity >= 0) {
+                intakeListener.updateQuantity(newQuantity, foodEntry.key)
+            } else {
+                newQuantity = 0
+            }
+            holder.counterTextView.text = "$newQuantity"
+        }
+        holder.plusButton.setOnClickListener {
+            val oldQuantity = holder.counterTextView.text.toString().toInt()
+            val newQuantity = oldQuantity + 1
+            holder.counterTextView.text = "$newQuantity"
+            intakeListener.updateQuantity(newQuantity, foodEntry.key)
+        }
 
     }
 
@@ -44,7 +61,6 @@ class FoodsAdapter : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
     }
 
     class FoodViewHolder(container: View) : RecyclerView.ViewHolder(container) {
-
         val cardView = container.card_view
         val foodNameTextView = container.food_name_text_view
         val minusButton = container.minus_button

@@ -8,6 +8,7 @@ import com.viero.federica.database.model.Food
 import com.viero.federica.home.HomeContract.HomePresenter
 import com.viero.federica.home.HomeContract.HomeView
 import com.viero.federica.home.adapter.FoodsAdapter
+import com.viero.federica.home.listener.IntakeListener
 import com.viero.federica.home.presenter.HomePresenterImpl
 
 /**
@@ -21,7 +22,11 @@ import com.viero.federica.home.presenter.HomePresenterImpl
  */
 class HomeFragment : Fragment(), HomeView {
 
-    val foodsAdapter = FoodsAdapter()
+    val foodsAdapter = FoodsAdapter(object : IntakeListener {
+        override fun updateQuantity(value: Int, foodKey: String) {
+            println("new quantity $value for $foodKey")
+        }
+    })
 
     companion object {
         fun newInstance() = HomeFragment()
