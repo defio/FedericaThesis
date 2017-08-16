@@ -33,7 +33,10 @@ object Settings {
         }
     }
 
-    fun getString(key: SettingsKey): String? = sharedPreferences?.getString(SettingsKey.USER_ID.name, null)
+    fun getString(key: SettingsKey): String? = sharedPreferences?.getString(key.name, null)
+
+    fun getUserId(): String? = getString(SettingsKey.USER_ID)
+
 
 }
 

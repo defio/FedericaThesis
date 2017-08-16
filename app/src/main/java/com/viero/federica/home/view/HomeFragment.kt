@@ -53,7 +53,7 @@ class HomeFragment : Fragment(), HomeView {
         presenter.deattachView()
     }
 
-    override fun updateFoods(foods: MutableMap<String, Food>) {
+    override fun updateFoods(foods: MutableMap<String, Pair<Food, Int?>>) {
         foodsAdapter.setDataSet(foods)
         foodsAdapter.notifyDataSetChanged()
         println("---------------------")

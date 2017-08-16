@@ -16,7 +16,7 @@ import com.viero.federica.database.model.Food
 
 interface HomeContract {
     interface HomeView : View {
-        fun updateFoods(foods: MutableMap<String, Food>)
+        fun updateFoods(foods: MutableMap<String, Pair<Food, Int?>>)
     }
 
     interface HomePresenter : Presenter<HomeView> {

@@ -21,13 +21,14 @@ import kotlinx.android.synthetic.main.food_card.view.*
  * @author Nicola De Fiorenze
  */
 class FoodsAdapter(val intakeListener: IntakeListener) : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
-    private var foods: MutableMap<String, Food> = mutableMapOf()
+    private var foodsWithQuantity: MutableMap<String, Pair<Food, Int?>> = mutableMapOf()
 
     override fun onBindViewHolder(holder: FoodsAdapter.FoodViewHolder, position: Int) {
-        val foodEntry = foods.entries.toList()[position]
+        val foodEntry = foodsWithQuantity.entries.toList()[position]
 
-        holder.foodNameTextView.text = foodEntry.value.name
-        holder.cardView.setCardBackgroundColor(Color.parseColor(foodEntry.value.color))
+        holder.foodNameTextView.text = foodEntry.value.first.name
+        holder.counterTextView.text = foodEntry.value.second?.toString() ?: "0"
+        holder.cardView.setCardBackgroundColor(Color.parseColor(foodEntry.value.first.color))
         holder.minusButton.setOnClickListener {
             val oldQuantity = holder.counterTextView.text.toString().toInt()
             var newQuantity = oldQuantity - 1
@@ -53,11 +54,11 @@ class FoodsAdapter(val intakeListener: IntakeListener) : RecyclerView.Adapter<Fo
         return FoodViewHolder(view)
     }
 
-    override fun getItemCount(): Int = foods.size
+    override fun getItemCount(): Int = foodsWithQuantity.size
 
 
-    fun setDataSet(foods: MutableMap<String, Food>) {
-        this.foods = foods
+    fun setDataSet(foods: MutableMap<String, Pair<Food, Int?>>) {
+        this.foodsWithQuantity = foods
     }
 
     class FoodViewHolder(container: View) : RecyclerView.ViewHolder(container) {
