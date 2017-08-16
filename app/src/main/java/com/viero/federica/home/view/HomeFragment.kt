@@ -1,10 +1,13 @@
 package com.viero.federica.home.view
 
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import com.viero.federica.R
 import com.viero.federica.database.model.Food
 import com.viero.federica.home.HomeContract.HomePresenter
 import com.viero.federica.home.HomeContract.HomeView
+import com.viero.federica.home.adapter.FoodsAdapter
 import com.viero.federica.home.presenter.HomePresenterImpl
 
 /**
@@ -18,6 +21,8 @@ import com.viero.federica.home.presenter.HomePresenterImpl
  */
 class HomeFragment : Fragment(), HomeView {
 
+    val foodsAdapter = FoodsAdapter()
+
     companion object {
         fun newInstance() = HomeFragment()
     }
@@ -30,8 +35,11 @@ class HomeFragment : Fragment(), HomeView {
         presenter.attachView(this)
 
 
-        presenter.fetchFoods()
+        val recyclerView = rootView.findViewById(R.id.recycler_view) as RecyclerView
+        recyclerView.layoutManager = GridLayoutManager(activity,2,GridLayoutManager.VERTICAL, false)
+        recyclerView.adapter = foodsAdapter
 
+        presenter.fetchFoods()
         return rootView
     }
 
@@ -41,6 +49,8 @@ class HomeFragment : Fragment(), HomeView {
     }
 
     override fun updateFoods(foods: MutableMap<String, Food>) {
+        foodsAdapter.setDataSet(foods)
+        foodsAdapter.notifyDataSetChanged()
         println("---------------------")
         println(foods)
     }

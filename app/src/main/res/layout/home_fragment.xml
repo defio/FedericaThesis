@@ -3,16 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/margin"
+    android:layout_margin="@dimen/half_margin"
     android:orientation="vertical">
 
 
-    <Button
-        android:id="@+id/button_login"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin"
-        android:text="@string/login.ok"/>
+        android:layout_height="match_parent"/>
 
 
 </LinearLayout>
