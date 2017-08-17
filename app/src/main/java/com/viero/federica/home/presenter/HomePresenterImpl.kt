@@ -1,5 +1,6 @@
 package com.viero.federica.home.presenter
 
+import com.google.firebase.crash.FirebaseCrash
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -33,7 +34,7 @@ class HomePresenterImpl : HomePresenter {
 
     val eventListener: ChildEventListener = object : ChildEventListener {
         override fun onCancelled(databaseError: DatabaseError?) {
-            System.err.println(databaseError?.toString())
+            FirebaseCrash.log(databaseError?.toString())
         }
 
         override fun onChildMoved(dataSnapshot: DataSnapshot?, prevChildKey: String?) {
@@ -61,7 +62,7 @@ class HomePresenterImpl : HomePresenter {
                         newKey).addListenerForSingleValueEvent(
                         object : ValueEventListener {
                             override fun onCancelled(databaseError: DatabaseError?) {
-                                System.err.println(databaseError?.toString())
+                                FirebaseCrash.log(databaseError?.toString())
                             }
 
                             override fun onDataChange(dataSnapshot: DataSnapshot?) {

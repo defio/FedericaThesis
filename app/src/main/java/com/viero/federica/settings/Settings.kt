@@ -2,6 +2,7 @@ package com.viero.federica.settings
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.google.firebase.crash.FirebaseCrash
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -27,7 +28,7 @@ object Settings {
             val editor = it?.edit()
             when (value) {
                 is String -> editor?.putString(key.name, value)
-                else -> System.err.println("cannot save $value")
+                else -> FirebaseCrash.log("cannot save $value")
             }
             editor?.apply()
         }

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.google.firebase.crash.FirebaseCrash
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -36,7 +37,7 @@ class HomeFragment : Fragment(), HomeView {
         override fun increaseQuantity(value: Int, foodKey: String) {
             Database.getChild(DatabaseEntity.SLOTS).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(databaseError: DatabaseError?) {
-                    System.err.println(databaseError)
+                    FirebaseCrash.log(databaseError?.toString())
                 }
 
                 override fun onDataChange(dataSnapshot: DataSnapshot?) {
