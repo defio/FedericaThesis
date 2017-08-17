@@ -18,11 +18,14 @@ import org.joda.time.DateTime
 interface HomeContract {
     interface HomeView : View {
         fun updateFoods(foods: FoodsWithIntakes)
+        fun showMultiselectDialog(items: Array<String>, selectedItems: BooleanArray?, onPositiveListener: (Map<Int, Boolean>)->Unit)
     }
 
     interface HomePresenter : Presenter<HomeView> {
         fun fetchFoods()
         fun changeDate(dateSelected: DateTime)
-        fun  updateQuantity(value: Int, foodKey: String)
+        fun updateQuantity(foodKey: String, slots: Map<String,Long>, onDone: () -> Unit)
+        fun increaseQuantity(value: Int, foodKey: String)
+        fun decreaseQuantity(value: Int, foodKey: String)
     }
 }

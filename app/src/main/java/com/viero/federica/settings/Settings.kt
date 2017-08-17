@@ -3,6 +3,7 @@ package com.viero.federica.settings
 import android.content.Context
 import android.content.SharedPreferences
 import com.google.firebase.crash.FirebaseCrash
+import com.google.gson.Gson
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -38,9 +39,17 @@ object Settings {
 
     fun getUserId(): String? = getString(SettingsKey.USER_ID)
 
+    fun setSlots(slots: List<String>) {
+        set(SettingsKey.SLOTS, Gson().toJson(slots))
+    }
+
+    fun getSlots(): List<String> =
+            Gson().fromJson(getString(SettingsKey.SLOTS), mutableListOf<String>()::class.java)
+
 
 }
 
 enum class SettingsKey {
-    USER_ID
+    USER_ID,
+    SLOTS
 }

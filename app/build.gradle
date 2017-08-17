@@ -48,6 +48,7 @@ dependencies {
 
     compile 'com.rafakob:floatingedittext:1.0.5'
     compile 'com.github.jhonnyx2012:horizontal-picker:1.0.5'
+    compile 'com.google.code.gson:gson:2.8.1'
 }
 
 

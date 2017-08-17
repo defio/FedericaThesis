@@ -67,11 +67,11 @@ class HomePresenterImpl : HomePresenter {
 
                             override fun onDataChange(dataSnapshot: DataSnapshot?) {
                                 @Suppress("UNCHECKED_CAST")
-                                val value = dataSnapshot?.value as kotlin.collections.Map<String,Long?>?
+                                val value = dataSnapshot?.value as kotlin.collections.Map<String, Long?>?
                                 foods.addFood(food)
                                 value?.entries?.forEach { (intake, count) ->
-                                    if(intake is String && count!=null && count is Long)
-                                    foods.updateIntakeForFood(food, intake, count.toInt())
+                                    if (intake is String && count != null && count is Long)
+                                        foods.updateIntakeForFood(food, intake, count.toInt())
                                 }
                                 view?.updateFoods(foods)
                             }
@@ -116,9 +116,79 @@ class HomePresenterImpl : HomePresenter {
         fetchFoods()
     }
 
-    override fun updateQuantity(value: Int, foodKey: String) {
+    override fun updateQuantity(foodKey: String, slots: Map<String, Long>, onDone: () -> Unit) {
+        slots.forEach { (slot, value) ->
+            Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+                    foodKey, slot).setValue(value)
+        }
+        onDone()
+    }
+
+    override fun increaseQuantity(value: Int, foodKey: String) {
         Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
-                foodKey, "colazione").setValue(value)
+                foodKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError?) {
+                FirebaseCrash.log(databaseError?.toString())
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                println(dataSnapshot?.value)
+
+                @Suppress("UNCHECKED_CAST")
+                val fetchedSlots = dataSnapshot?.let {
+                    if (it.value != null) {
+                        (it.value as java.util.HashMap<String, Long>)
+                    } else {
+                        null
+                    }
+                } ?: emptyMap<String, Long>()
+
+                val slots = mutableMapOf<String, Long>()
+
+                Settings.getSlots().forEach {
+                    slots.put(it, 0)
+                }
+                fetchedSlots.forEach { (slot, value) -> slots.put(slot, value) }
+
+                updateQuantity(1, foodKey, slots)
+            }
+        })
+    }
+
+    override fun decreaseQuantity(value: Int, foodKey: String) {
+        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+                foodKey).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError?) {
+                FirebaseCrash.log(databaseError?.toString())
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                println(dataSnapshot?.value)
+
+                val slots = dataSnapshot?.let {
+                    (it.value as java.util.HashMap<String, Long>).filterValues { mapValue ->
+                        if (mapValue is Long) {
+                            mapValue > 0
+                        } else false
+                    }
+                } ?: emptyMap()
+                updateQuantity(-1, foodKey, slots)
+            }
+        })
+    }
+
+    private fun updateQuantity(value: Int, foodKey: String, slots: Map<String, Long>) {
+        view?.showMultiselectDialog(slots.keys.toTypedArray(), null) {
+            selected ->
+            val slotsToUpdate = mutableMapOf<String, Long>()
+            val oldSlots = slots.toList()
+            selected.filterValues { mapValue -> mapValue }
+                    .keys
+                    .forEach { slotsToUpdate.put(oldSlots[it].first, oldSlots[it].second + value) }
+            updateQuantity(foodKey, slotsToUpdate) {
+                fetchFoods()
+            }
+        }
     }
 }
 

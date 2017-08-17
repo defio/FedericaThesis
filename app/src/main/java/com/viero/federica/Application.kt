@@ -1,6 +1,12 @@
 package com.viero.federica
 
 import android.app.Application
+import com.google.firebase.crash.FirebaseCrash
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.viero.federica.database.Database
+import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.settings.Settings
 
 /**
@@ -20,5 +26,25 @@ class Application: Application(){
         super.onCreate()
 
         settings = Settings.init(this)
+
+
+        fetchLots()
+    }
+
+    fun fetchLots(){
+        Database.getChild(DatabaseEntity.SLOTS).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(databaseError: DatabaseError?) {
+                FirebaseCrash.log(databaseError?.toString())
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                println(dataSnapshot?.value)
+                @Suppress("UNCHECKED_CAST")
+                val slotsKeys: List<String> = dataSnapshot?.let {
+                    (it.value as java.util.HashMap<String, *>)
+                }?.keys?.toList() ?: emptyList<String>()
+                Settings.setSlots(slotsKeys)
+            }
+        })
     }
 }
