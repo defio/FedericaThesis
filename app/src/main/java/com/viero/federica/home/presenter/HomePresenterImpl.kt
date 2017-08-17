@@ -5,6 +5,7 @@ import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import com.viero.federica.commons.format
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.database.model.Food
@@ -13,7 +14,6 @@ import com.viero.federica.home.HomeContract.HomePresenter
 import com.viero.federica.home.model.FoodsWithIntakes
 import com.viero.federica.settings.Settings
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 
 
 /**
@@ -66,7 +66,6 @@ class HomePresenterImpl : HomePresenter {
                             }
 
                             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                                println(dataSnapshot?.value)
                                 @Suppress("UNCHECKED_CAST")
                                 val value = dataSnapshot?.value as kotlin.collections.Map<String,Long?>?
                                 foods.addFood(food)
@@ -122,6 +121,4 @@ class HomePresenterImpl : HomePresenter {
                 foodKey, "colazione").setValue(value)
     }
 }
-
-private fun DateTime.format() = DateTimeFormat.forPattern("dd-MM-yyyy").print(this)
 

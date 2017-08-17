@@ -9,6 +9,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.viero.federica.R
+import com.viero.federica.commons.format
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.home.HomeContract.HomePresenter
@@ -17,6 +18,7 @@ import com.viero.federica.home.adapter.FoodsAdapter
 import com.viero.federica.home.listener.IntakeListener
 import com.viero.federica.home.model.FoodsWithIntakes
 import com.viero.federica.home.presenter.HomePresenterImpl
+import com.viero.federica.settings.Settings
 import kotlinx.android.synthetic.main.home_fragment.view.*
 import org.joda.time.DateTime
 import java.util.*
@@ -51,7 +53,25 @@ class HomeFragment : Fragment(), HomeView {
         }
 
         override fun decreaseQuantity(value: Int, foodKey: String) {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, DateTime.now().format(),
+                    foodKey).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(databaseError: DatabaseError?) {
+                    FirebaseCrash.log(databaseError?.toString())
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot?) {
+                    println(dataSnapshot?.value)
+
+                    val slots = dataSnapshot?.let {
+                        (it.value as java.util.HashMap<*, *>).filterValues { mapValue ->
+                            if (mapValue is Long) {
+                                mapValue > 0
+                            } else false
+                        }.keys.toList().filterIsInstance<String>()
+                    }?.toTypedArray() ?: emptyArray()
+                    updateQuantity(value, foodKey, slots)
+                }
+            })
         }
 
         private fun updateQuantity(value: Int, foodKey: String, slots: Array<String>) {
