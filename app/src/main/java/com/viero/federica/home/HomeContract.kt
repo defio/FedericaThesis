@@ -2,7 +2,7 @@ package com.viero.federica.home
 
 import com.viero.federica.base.Presenter
 import com.viero.federica.base.View
-import com.viero.federica.database.model.Food
+import com.viero.federica.home.model.FoodsWithIntakes
 import org.joda.time.DateTime
 
 /**
@@ -17,7 +17,7 @@ import org.joda.time.DateTime
 
 interface HomeContract {
     interface HomeView : View {
-        fun updateFoods(foods: MutableMap<String, Pair<Food, Int?>>)
+        fun updateFoods(foods: FoodsWithIntakes)
     }
 
     interface HomePresenter : Presenter<HomeView> {

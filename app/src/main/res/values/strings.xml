@@ -4,4 +4,7 @@
     <string name="login.name">Nome</string>
     <string name="login.surname">Cognome</string>
     <string name="login.ok">Ok</string>
+    <string name="home.slotDialog.title">Seleziona almeno un opzione</string>
+    <string name="generic.ok">Ok</string>
+    <string name="generic.cancel">Annulla</string>
 </resources>

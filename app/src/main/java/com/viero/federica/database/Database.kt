@@ -39,5 +39,6 @@ object Database {
 enum class DatabaseEntity(val schemaName: String) {
     USERS("users"),
     INTAKES("intakes"),
+    SLOTS("slots"),
     FOODS("foods")
 }

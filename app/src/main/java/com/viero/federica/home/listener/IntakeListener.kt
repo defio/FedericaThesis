@@ -11,5 +11,6 @@ package com.viero.federica.home.listener
  */
 @FunctionalInterface
 interface IntakeListener{
-    fun updateQuantity(value: Int, foodKey: String)
+    fun increaseQuantity(value: Int, foodKey: String)
+    fun decreaseQuantity(value: Int, foodKey: String)
 }

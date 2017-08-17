@@ -1,13 +1,16 @@
 package com.viero.federica.home.adapter
 
 import android.graphics.Color
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
 import com.viero.federica.R
-import com.viero.federica.database.model.Food
 import com.viero.federica.home.listener.IntakeListener
+import com.viero.federica.home.model.FoodsWithIntakes
 import kotlinx.android.synthetic.main.food_card.view.*
 
 /**
@@ -21,29 +24,27 @@ import kotlinx.android.synthetic.main.food_card.view.*
  * @author Nicola De Fiorenze
  */
 class FoodsAdapter(val intakeListener: IntakeListener) : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
-    private var foodsWithQuantity: MutableMap<String, Pair<Food, Int?>> = mutableMapOf()
+    private var foodsWithIntakes: FoodsWithIntakes? = null
 
     override fun onBindViewHolder(holder: FoodsAdapter.FoodViewHolder, position: Int) {
-        val foodEntry = foodsWithQuantity.entries.toList()[position]
+        foodsWithIntakes?.let {
+            val foodEntry = it.getFoodAtPosition(position)
 
-        holder.foodNameTextView.text = foodEntry.value.first.name
-        holder.counterTextView.text = foodEntry.value.second?.toString() ?: "0"
-        holder.cardView.setCardBackgroundColor(Color.parseColor(foodEntry.value.first.color))
-        holder.minusButton.setOnClickListener {
-            val oldQuantity = holder.counterTextView.text.toString().toInt()
-            var newQuantity = oldQuantity - 1
-            if (newQuantity >= 0) {
-                intakeListener.updateQuantity(newQuantity, foodEntry.key)
-            } else {
-                newQuantity = 0
+            holder.foodNameTextView.text = foodEntry.food.name
+            holder.counterTextView.text = foodEntry.intakesCounter.sum().toString()
+            holder.cardView.setCardBackgroundColor(Color.parseColor(foodEntry.food.color))
+            holder.minusButton.setOnClickListener {
+                val oldQuantity = holder.counterTextView.text.toString().toInt()
+                val newQuantity = oldQuantity - 1
+                if (newQuantity >= 0) {
+                    intakeListener.decreaseQuantity(newQuantity, foodEntry.food.name ?: "")
+                }
             }
-            holder.counterTextView.text = "$newQuantity"
-        }
-        holder.plusButton.setOnClickListener {
-            val oldQuantity = holder.counterTextView.text.toString().toInt()
-            val newQuantity = oldQuantity + 1
-            holder.counterTextView.text = "$newQuantity"
-            intakeListener.updateQuantity(newQuantity, foodEntry.key)
+            holder.plusButton.setOnClickListener {
+                val oldQuantity = holder.counterTextView.text.toString().toInt()
+                val newQuantity = oldQuantity + 1
+                intakeListener.increaseQuantity(newQuantity, foodEntry.food.name ?: "")
+            }
         }
 
     }
@@ -54,18 +55,18 @@ class FoodsAdapter(val intakeListener: IntakeListener) : RecyclerView.Adapter<Fo
         return FoodViewHolder(view)
     }
 
-    override fun getItemCount(): Int = foodsWithQuantity.size
+    override fun getItemCount(): Int = foodsWithIntakes?.size() ?: 0
 
 
-    fun setDataSet(foods: MutableMap<String, Pair<Food, Int?>>) {
-        this.foodsWithQuantity = foods
+    fun setDataSet(foods: FoodsWithIntakes) {
+        this.foodsWithIntakes = foods
     }
 
     class FoodViewHolder(container: View) : RecyclerView.ViewHolder(container) {
-        val cardView = container.card_view
-        val foodNameTextView = container.food_name_text_view
-        val minusButton = container.minus_button
-        val plusButton = container.plus_button
-        val counterTextView = container.counter_text_view
+        val cardView: CardView = container.card_view
+        val foodNameTextView: TextView = container.food_name_text_view
+        val minusButton: Button = container.minus_button
+        val plusButton: Button = container.plus_button
+        val counterTextView: TextView = container.counter_text_view
     }
 }
