@@ -32,7 +32,7 @@ class HomePresenterImpl : HomePresenter {
     var view: HomeContract.HomeView? = null
     var foods: FoodsWithIntakes = FoodsWithIntakes()
 
-    val eventListener: ChildEventListener = object : ChildEventListener {
+    private val eventListener: ChildEventListener = object : ChildEventListener {
         override fun onCancelled(databaseError: DatabaseError?) {
             FirebaseCrash.log(databaseError?.toString())
         }
@@ -48,10 +48,9 @@ class HomePresenterImpl : HomePresenter {
         }
 
         private fun updateFoodMap(prevChildKey: String?, dataSnapshot: DataSnapshot?) {
-            val oldKey = prevChildKey
             val newKey = dataSnapshot?.key
             val food = dataSnapshot?.getValue(Food::class.java) as Food
-            if (oldKey != null) {
+            if (prevChildKey != null) {
                 foods.remove(prevChildKey)
             }
             if (newKey != null) {
@@ -108,7 +107,7 @@ class HomePresenterImpl : HomePresenter {
 
     override fun fetchFoods() {
         Database.getChild(DatabaseEntity.FOODS).removeEventListener(eventListener)
-        Database.getChild(DatabaseEntity.FOODS).addChildEventListener(eventListener)
+        Database.getChild(DatabaseEntity.FOODS).orderByChild("order").addChildEventListener(eventListener)
     }
 
     override fun changeDate(dateSelected: DateTime) {
