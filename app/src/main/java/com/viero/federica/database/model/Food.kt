@@ -10,4 +10,8 @@ package com.viero.federica.database.model
  * @author Nicola De Fiorenze
  */
 
-data class Food(var name: String? = null, var image: String? = null, var color: String? = null)
+data class Food(var name: String? = null,
+                var image: String? = null,
+                var color: String? = null,
+                var defaultInHome: Boolean? = false
+)
