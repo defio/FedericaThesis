@@ -1,9 +1,6 @@
 package com.viero.federica.home
 
-import com.viero.federica.base.Presenter
-import com.viero.federica.base.View
-import com.viero.federica.home.model.FoodsWithIntakes
-import org.joda.time.DateTime
+import com.viero.federica.foods_commons.FoodsContract
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -14,18 +11,8 @@ import org.joda.time.DateTime
  *
  * @author Nicola De Fiorenze
  */
-
 interface HomeContract {
-    interface HomeView : View {
-        fun updateFoods(foods: FoodsWithIntakes)
-        fun showMultiselectDialog(items: Array<String>, selectedItems: BooleanArray?, onPositiveListener: (Map<Int, Boolean>)->Unit)
-    }
+    interface HomeView : FoodsContract.FoodsView
 
-    interface HomePresenter : Presenter<HomeView> {
-        fun fetchFoods()
-        fun changeDate(dateSelected: DateTime)
-        fun updateQuantity(foodKey: String, slots: Map<String,Long>, onDone: () -> Unit)
-        fun increaseQuantity(value: Int, foodKey: String)
-        fun decreaseQuantity(value: Int, foodKey: String)
-    }
+    interface HomePresenter : FoodsContract.FoodsPresenter<HomeView>
 }

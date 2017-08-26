@@ -24,6 +24,9 @@
         <activity
             android:name=".home.view.HomeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".aliments.view.AlimentsActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

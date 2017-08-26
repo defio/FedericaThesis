@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.food_card.view.*
  *
  * @author Nicola De Fiorenze
  */
-class FoodsAdapter(val intakeListener: IntakeListener) : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
+class FoodsAdapter(private val intakeListener: IntakeListener) : RecyclerView.Adapter<FoodsAdapter.FoodViewHolder>() {
     private var foodsWithIntakes: FoodsWithIntakes? = null
 
     override fun onBindViewHolder(holder: FoodsAdapter.FoodViewHolder, position: Int) {

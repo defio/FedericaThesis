@@ -1,4 +1,4 @@
-package com.viero.federica.commons
+package com.viero.federica.application_commons
 
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat

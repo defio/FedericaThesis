@@ -2,7 +2,7 @@ package com.viero.federica
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import com.viero.federica.commons.start
+import com.viero.federica.application_commons.start
 import com.viero.federica.home.view.HomeActivity
 import com.viero.federica.login.view.LoginActivity
 import com.viero.federica.settings.Settings

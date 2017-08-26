@@ -6,9 +6,8 @@ import android.widget.Button
 import android.widget.TextView
 import com.jakewharton.rxbinding2.view.RxView
 import com.jakewharton.rxbinding2.widget.RxTextView
-import com.viero.federica.MainActivity
 import com.viero.federica.R
-import com.viero.federica.commons.start
+import com.viero.federica.application_commons.start
 import com.viero.federica.home.view.HomeActivity
 import com.viero.federica.login.LoginContract.LoginView
 import com.viero.federica.login.presenter.LoginPresenterImpl

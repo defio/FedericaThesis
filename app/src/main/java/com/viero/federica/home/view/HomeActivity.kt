@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.viero.federica.R
-import com.viero.federica.commons.hideActionBar
-import com.viero.federica.commons.pushFragment
+import com.viero.federica.application_commons.hideActionBar
+import com.viero.federica.application_commons.pushFragment
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -24,7 +24,7 @@ class HomeActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         hideActionBar()
 
