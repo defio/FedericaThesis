@@ -32,7 +32,7 @@ class Application: Application(){
     }
 
     fun fetchLots(){
-        Database.getChild(DatabaseEntity.SLOTS).addListenerForSingleValueEvent(object : ValueEventListener {
+        Database.getChild(DatabaseEntity.SLOTS).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError?) {
                 FirebaseCrash.log(databaseError?.toString())
             }
@@ -42,7 +42,7 @@ class Application: Application(){
                 @Suppress("UNCHECKED_CAST")
                 val slotsKeys: List<String> = dataSnapshot?.let {
                     (it.value as java.util.HashMap<String, *>)
-                }?.keys?.toList() ?: emptyList<String>()
+                }?.keys?.toList() ?: emptyList()
                 Settings.setSlots(slotsKeys)
             }
         })
