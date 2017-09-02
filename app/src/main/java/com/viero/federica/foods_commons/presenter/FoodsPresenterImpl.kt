@@ -46,7 +46,7 @@ open abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPr
         private fun updateFoodMap(prevChildKey: String?, dataSnapshot: DataSnapshot?) {
             val newKey = dataSnapshot?.key
             val food = dataSnapshot?.getValue(Food::class.java) as Food
-            if(isFoodToFilterOut(food)){
+            if (isFoodToFilterOut(food)) {
                 return
             }
             if (prevChildKey != null) {
@@ -172,9 +172,7 @@ open abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPr
 
                 val slots = dataSnapshot?.let {
                     (it.value as java.util.HashMap<String, Long>).filterValues { mapValue ->
-                        if (mapValue is Long) {
-                            mapValue > 0
-                        } else false
+                        mapValue > 0
                     }
                 } ?: emptyMap()
                 updateQuantity(-1, foodKey, slots)
@@ -183,9 +181,10 @@ open abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPr
     }
 
     private fun updateQuantity(value: Int, foodKey: String, slots: Map<String, Long>) {
-        view?.showMultiselectDialog(slots.keys.toTypedArray(), null) { selected ->
+        val orderedSlots = orderSlotMap(slots)
+        view?.showMultiselectDialog(orderedSlots.keys.toTypedArray(), null) { selected ->
             val slotsToUpdate = mutableMapOf<String, Long>()
-            val oldSlots = slots.toList()
+            val oldSlots = orderedSlots.toList()
             selected.filterValues { mapValue -> mapValue }
                     .keys
                     .forEach { slotsToUpdate.put(oldSlots[it].first, oldSlots[it].second + value) }
@@ -193,5 +192,19 @@ open abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPr
                 fetchFoods()
             }
         }
+    }
+
+    private fun orderSlotMap(slots: Map<String, Long>): Map<String, Long> {
+        val slotsFromSettings = Settings.getSlots()
+        val orderedMap = mutableMapOf<String, Long>()
+
+        slotsFromSettings.forEach {
+            if (slots[it] != null) {
+                orderedMap.put(it, slots[it]!!)
+            }
+        }
+
+        return orderedMap
+
     }
 }

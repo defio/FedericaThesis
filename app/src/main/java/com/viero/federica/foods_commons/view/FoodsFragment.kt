@@ -1,18 +1,25 @@
 package com.viero.federica.foods_commons.view
 
 import android.app.AlertDialog
+import android.content.Intent
+import android.graphics.Color
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.viero.federica.R
+import com.viero.federica.aliments.view.AlimentsActivity
+import com.viero.federica.aliments.view.AlimentsFragment
 import com.viero.federica.foods_commons.FoodsContract
 import com.viero.federica.foods_commons.FoodsContract.FoodsPresenter
 import com.viero.federica.home.adapter.FoodsAdapter
 import com.viero.federica.home.listener.IntakeListener
 import com.viero.federica.home.model.FoodsWithIntakes
-import kotlinx.android.synthetic.main.home_fragment.view.*
+import com.viero.federica.home.view.HomeActivity
+import com.viero.federica.home.view.HomeFragment
+import kotlinx.android.synthetic.main.foods_fragment.view.*
+import kotlinx.android.synthetic.main.top_buttons.view.*
 import org.joda.time.DateTime
-import java.util.*
 
 /**
  * This software has been developed by Ennova Research S.r.l.<br/>
@@ -38,30 +45,67 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
         }
     })
 
-    abstract fun <T : FoodsContract.FoodsView> getHomePresenter() : FoodsPresenter<T>
+    abstract fun <T : FoodsContract.FoodsView> getHomePresenter(): FoodsPresenter<T>
 
     override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: android.os.Bundle?): android.view.View? {
-        val rootView = inflater.inflate(R.layout.home_fragment, container, false)
+        val rootView = inflater.inflate(R.layout.foods_fragment, container, false)
         presenter.attachView(this)
 
-
-        val endDate = Calendar.getInstance()
-        endDate.add(Calendar.MONTH, 1)
-
-        val datePicker = rootView.datePicker
-        datePicker
-                .setListener { dateSelected -> presenter.changeDate(dateSelected) }
-                .init()
-        datePicker.setDate(DateTime.now())
-
+        initTopButtons(rootView)
+        initDatePicker(rootView)
 
         val recyclerView = rootView.findViewById(R.id.recycler_view) as RecyclerView
         recyclerView.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         recyclerView.adapter = foodsAdapter
 
 
+
         presenter.fetchFoods()
         return rootView
+    }
+
+    private fun initTopButtons(rootView: View) {
+        rootView.home_button.setOnClickListener {
+            if (this !is HomeFragment) {
+                val intent = Intent(activity, HomeActivity::class.java)
+                activity.startActivity(intent)
+                activity.finish()
+            }
+        }
+
+        rootView.aliments_button.setOnClickListener {
+            if (this !is AlimentsFragment) {
+                val intent = Intent(activity, AlimentsActivity::class.java)
+                activity.startActivity(intent)
+                activity.finish()
+            }
+        }
+
+        rootView.findViewById(R.id.weight_button).setOnClickListener {
+            //TODO
+        }
+
+        when (this) {
+            is HomeFragment -> {
+                rootView.home_button.apply {
+                    setBackgroundColor(Color.parseColor("#FF4081"))
+//                    isClickable = false
+                }
+            }
+            is AlimentsFragment ->
+                rootView.aliments_button.apply {
+                    setBackgroundColor(Color.parseColor("#FF4081"))
+//                    isClickable = false
+                }
+        }
+    }
+
+    private fun initDatePicker(rootView: View) {
+        val datePicker = rootView.datePicker
+        datePicker
+                .setListener { dateSelected -> presenter.changeDate(dateSelected) }
+                .init()
+        datePicker.setDate(DateTime.now())
     }
 
     override fun onDestroy() {

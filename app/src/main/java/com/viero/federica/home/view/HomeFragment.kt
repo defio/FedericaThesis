@@ -1,19 +1,8 @@
 package com.viero.federica.home.view
 
-import android.app.AlertDialog
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
-import com.viero.federica.R
 import com.viero.federica.foods_commons.FoodsContract
-import com.viero.federica.home.HomeContract
-import com.viero.federica.home.adapter.FoodsAdapter
-import com.viero.federica.home.listener.IntakeListener
-import com.viero.federica.home.model.FoodsWithIntakes
+import com.viero.federica.foods_commons.view.FoodsFragment
 import com.viero.federica.home.presenter.HomePresenterImpl
-import kotlinx.android.synthetic.main.home_fragment.view.*
-import org.joda.time.DateTime
-import java.util.*
 
 
 /**
@@ -25,73 +14,9 @@ import java.util.*
  *
  * @author Nicola De Fiorenze
  */
-class HomeFragment : Fragment(), HomeContract.HomeView {
+class HomeFragment : FoodsFragment() {
 
-    private val presenter: FoodsContract.FoodsPresenter<FoodsContract.FoodsView> by lazy { getHomePresenter<FoodsContract.FoodsView>() }
-
-    private val foodsAdapter = FoodsAdapter(object : IntakeListener {
-        override fun increaseQuantity(value: Int, foodKey: String) {
-            presenter.increaseQuantity(value, foodKey)
-        }
-
-        override fun decreaseQuantity(value: Int, foodKey: String) {
-            presenter.decreaseQuantity(value, foodKey)
-
-        }
-    })
-
-
-
-    override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: android.os.Bundle?): android.view.View? {
-        val rootView = inflater.inflate(R.layout.home_fragment, container, false)
-        presenter.attachView(this)
-
-
-        val endDate = Calendar.getInstance()
-        endDate.add(Calendar.MONTH, 1)
-
-        val datePicker = rootView.datePicker
-        datePicker
-                .setListener { dateSelected -> presenter.changeDate(dateSelected) }
-                .init()
-        datePicker.setDate(DateTime.now())
-
-
-        val recyclerView = rootView.findViewById(R.id.recycler_view) as RecyclerView
-        recyclerView.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
-        recyclerView.adapter = foodsAdapter
-
-
-        presenter.fetchFoods()
-        return rootView
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.deattachView()
-    }
-
-    override fun updateFoods(foods: FoodsWithIntakes) {
-        foodsAdapter.setDataSet(foods)
-        foodsAdapter.notifyDataSetChanged()
-    }
-
-    override fun showMultiselectDialog(items: Array<String>, selectedItems: BooleanArray?, onPositiveListener: (Map<Int, Boolean>) -> Unit) {
-        val builder = AlertDialog.Builder(activity)
-        val selected = mutableMapOf<Int, Boolean>()
-        builder.setTitle(R.string.home_slotDialog_title)
-                .setMultiChoiceItems(items, selectedItems) { _, which, isChecked -> selected.put(which, isChecked) }
-                .setPositiveButton(R.string.generic_ok) { _, _ ->
-                    onPositiveListener(selected)
-                }
-                .setNegativeButton(R.string.generic_cancel) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-                .show()
-    }
-
-    fun <T : FoodsContract.FoodsView> getHomePresenter(): FoodsContract.FoodsPresenter<T> =
+    override fun <T : FoodsContract.FoodsView> getHomePresenter(): FoodsContract.FoodsPresenter<T> =
             HomePresenterImpl()
 
 

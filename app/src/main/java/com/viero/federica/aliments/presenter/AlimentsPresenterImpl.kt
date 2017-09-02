@@ -17,5 +17,4 @@ class AlimentsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresenterImpl
 
     override fun isFoodToFilterOut(food: Food) = false
 
-
 }

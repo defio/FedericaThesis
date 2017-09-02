@@ -4,6 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/top_buttons"/>
+
     <com.github.jhonnyx2012.horizontalpicker.HorizontalPicker
         android:id="@+id/datePicker"
         android:layout_width="match_parent"
@@ -11,10 +13,10 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:layout_margin="@dimen/half_margin"
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/half_margin"/>
 
 
 </LinearLayout>

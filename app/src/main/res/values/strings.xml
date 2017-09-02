@@ -7,4 +7,7 @@
     <string name="home.slotDialog.title">Seleziona almeno un opzione</string>
     <string name="generic.ok">Ok</string>
     <string name="generic.cancel">Annulla</string>
+    <string name="home">Principali</string>
+    <string name="weight">Peso</string>
+    <string name="aliments">Alimenti</string>
 </resources>
