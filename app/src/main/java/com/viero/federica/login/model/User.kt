@@ -1,8 +1,6 @@
 package com.viero.federica.login.model
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <p> This doc comment should contain a short class description.<p/>
  * <br/>

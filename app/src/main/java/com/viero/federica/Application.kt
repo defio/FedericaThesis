@@ -11,8 +11,6 @@ import com.viero.federica.database.model.Slot
 import com.viero.federica.settings.Settings
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-15
@@ -21,7 +19,7 @@ import com.viero.federica.settings.Settings
  */
 class Application: Application(){
 
-    lateinit var settings: Settings
+    private lateinit var settings: Settings
 
     override fun onCreate() {
         super.onCreate()
@@ -31,7 +29,7 @@ class Application: Application(){
         fetchLots()
     }
 
-    fun fetchLots(){
+    private fun fetchLots(){
         Database.getChild(DatabaseEntity.SLOTS).orderByChild("order").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError?) {
                 FirebaseCrash.log(databaseError?.toString())

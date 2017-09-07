@@ -4,8 +4,6 @@ import com.viero.federica.base.Presenter
 import com.viero.federica.base.View
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-15

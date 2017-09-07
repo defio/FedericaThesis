@@ -4,8 +4,6 @@ import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-17

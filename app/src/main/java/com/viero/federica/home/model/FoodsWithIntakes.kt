@@ -3,8 +3,6 @@ package com.viero.federica.home.model
 import com.viero.federica.database.model.Food
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-17

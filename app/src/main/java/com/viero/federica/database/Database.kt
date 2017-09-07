@@ -5,8 +5,6 @@ import com.google.firebase.database.FirebaseDatabase
 import java.security.InvalidParameterException
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-15

@@ -14,10 +14,7 @@ import com.viero.federica.home.model.FoodsWithIntakes
 import kotlinx.android.synthetic.main.food_card.view.*
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
- * <p> This doc comment should contain a short class description.<p/>
  * <br/>
  * created on: 2017-08-15
  *

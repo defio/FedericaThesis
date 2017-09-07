@@ -13,15 +13,13 @@ import com.viero.federica.settings.Settings
 import org.joda.time.DateTime
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-15
  *
  * @author Nicola De Fiorenze
  */
-open abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresenter<T> {
+abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresenter<T> {
 
     private var currentDate: DateTime = DateTime.now()
 
@@ -68,7 +66,7 @@ open abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPr
                                 val value = dataSnapshot?.value as kotlin.collections.Map<String, Long?>?
                                 foods.addFood(food)
                                 value?.entries?.forEach { (intake, count) ->
-                                    if (intake is String && count != null && count is Long)
+                                    if (count != null)
                                         foods.updateIntakeForFood(food, intake, count.toInt())
                                 }
                                 view?.updateFoods(foods)

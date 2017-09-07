@@ -6,8 +6,6 @@ import com.google.firebase.crash.FirebaseCrash
 import com.google.gson.Gson
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-15
@@ -24,7 +22,7 @@ object Settings {
         return this
     }
 
-    fun set(key: SettingsKey, value: Any?) {
+    private fun set(key: SettingsKey, value: Any?) {
         sharedPreferences.let {
             val editor = it?.edit()
             when (value) {
@@ -35,9 +33,13 @@ object Settings {
         }
     }
 
-    fun getString(key: SettingsKey): String? = sharedPreferences?.getString(key.name, null)
+    private fun getString(key: SettingsKey): String? = sharedPreferences?.getString(key.name, null)
 
     fun getUserId(): String? = getString(SettingsKey.USER_ID)
+
+    fun setUserId(userId : String){
+        set(SettingsKey.USER_ID,userId)
+    }
 
     fun setSlots(slots: List<String>) {
         set(SettingsKey.SLOTS, Gson().toJson(slots))

@@ -22,8 +22,6 @@ import kotlinx.android.synthetic.main.top_buttons.view.*
 import org.joda.time.DateTime
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-26

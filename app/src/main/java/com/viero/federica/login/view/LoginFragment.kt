@@ -13,8 +13,6 @@ import com.viero.federica.login.LoginContract.LoginView
 import com.viero.federica.login.presenter.LoginPresenterImpl
 
 /**
- * This software has been developed by Ennova Research S.r.l.<br/>
- * <br/>
  * Project: federica<br/>
  * <br/>
  * created on: 2017-08-15
