@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
+import org.joda.time.Months;
 
 /**
  * Created by Jhonny Barrios on 22/02/2017.
@@ -134,9 +134,9 @@ public class HorizontalPickerMonthRecyclerView extends RecyclerView implements O
 
     public void setDate(DateTime date) {
         DateTime today = new DateTime().withTime(0, 0, 0, 0);
-        int difference = Days
-                .daysBetween(date, today)
-                .getDays() * (date.getYear() < today.getMillis() ? -1 : 1);
+        int difference = Months
+                .monthsBetween(date, today)
+                .getMonths() * -1;
         smoothScrollToPosition(offset + difference);
     }
 

@@ -79,9 +79,9 @@ public class HorizontalMonthPicker extends LinearLayout implements HorizontalPic
     public void init() {
         inflate(getContext(), R.layout.horizontal_month_picker, this);
         recyclerViewMonth = (HorizontalPickerMonthRecyclerView) findViewById(R.id.recyclerView);
-        int DEFAULT_DAYS_TO_PLUS = 120;
-        int finalDays = days == NO_SETTED ? DEFAULT_DAYS_TO_PLUS : days;
-        int DEFAULT_INITIAL_OFFSET = 7;
+        int DEFAULT_MONTH_TO_PLUS = 120;
+        int finalDays = days == NO_SETTED ? DEFAULT_MONTH_TO_PLUS : days;
+        int DEFAULT_INITIAL_OFFSET = 3;
         int finalOffset = offset == NO_SETTED ? DEFAULT_INITIAL_OFFSET : offset;
         vHover = findViewById(R.id.vHover);
         textViewYear = (TextView) findViewById(R.id.text_view_year);

@@ -50,7 +50,7 @@ public class HorizontalMonthPickerAdapter extends RecyclerView.Adapter<Horizonta
         this.listener = listener;
         generateDataSet(numberOfDaysToCreate,
                 new DateTime()
-                        .minusDays(offset)
+                        .minusMonths(offset)
                         .getMillis(),
                 false);
         this.mBackgroundColor = mBackgroundColor;
