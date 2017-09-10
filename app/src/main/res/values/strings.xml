@@ -10,4 +10,6 @@
     <string name="home">Principali</string>
     <string name="weight">Peso</string>
     <string name="aliments">Alimenti</string>
+    <string name="weight.no.measurement">Nessuna misurazione</string>
+    <string name="new.weight.measurement">Inserisci nuovo peso</string>
 </resources>

@@ -38,5 +38,6 @@ enum class DatabaseEntity(val schemaName: String) {
     USERS("users"),
     INTAKES("intakes"),
     SLOTS("slots"),
-    FOODS("foods")
+    FOODS("foods"),
+    WEIGHTS("weights")
 }

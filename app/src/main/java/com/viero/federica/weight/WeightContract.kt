@@ -16,11 +16,17 @@ import org.joda.time.DateTime
 interface WeightContract{
 
     interface WeightView : View{
-
+        fun showNoMeasurementsView()
+        fun hideMeasurementsView()
+        fun hideNoMeasurementsView()
+        fun showMeasurementsView()
+        fun showNewMeasurementButton()
+        fun hideNewMeasurementButton()
     }
 
     interface WeightPresenter : Presenter<WeightView>{
         fun changeDate(dateSelected: DateTime)
 
+        fun fetchMeasurement()
     }
 }

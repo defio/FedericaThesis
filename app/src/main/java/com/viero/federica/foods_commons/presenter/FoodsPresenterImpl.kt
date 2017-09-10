@@ -26,6 +26,8 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
     private var view: T? = null
     private var foods: FoodsWithIntakes = FoodsWithIntakes()
 
+    private var currentQuery: Query? = null
+
     private val eventListener: ChildEventListener = object : ChildEventListener {
         override fun onCancelled(databaseError: DatabaseError?) {
             FirebaseCrash.log(databaseError?.toString())
@@ -101,12 +103,16 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
 
     override fun deattachView() {
         view = null
-        queryFoods().removeEventListener(eventListener)
+        currentQuery?.removeEventListener(eventListener)
+        currentQuery = null
     }
 
     override fun fetchFoods() {
-        queryFoods().removeEventListener(eventListener)
-        queryFoods().addChildEventListener(eventListener)
+        if (currentQuery == null) {
+            currentQuery = queryFoods()
+        }
+        currentQuery?.removeEventListener(eventListener)
+        currentQuery?.addChildEventListener(eventListener)
     }
 
     private fun queryFoods(): Query =
