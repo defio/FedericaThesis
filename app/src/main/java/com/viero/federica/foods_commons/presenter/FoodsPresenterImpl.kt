@@ -109,7 +109,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
         queryFoods().addChildEventListener(eventListener)
     }
 
-    fun queryFoods(): Query =
+    private fun queryFoods(): Query =
             Database
                     .getChild(DatabaseEntity.FOODS)
                     .orderByChild("order")

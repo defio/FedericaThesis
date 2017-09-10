@@ -17,6 +17,7 @@ import com.viero.federica.home.listener.IntakeListener
 import com.viero.federica.home.model.FoodsWithIntakes
 import com.viero.federica.home.view.HomeActivity
 import com.viero.federica.home.view.HomeFragment
+import com.viero.federica.weight.view.WeightActivity
 import kotlinx.android.synthetic.main.foods_fragment.view.*
 import kotlinx.android.synthetic.main.top_buttons.view.*
 import org.joda.time.DateTime
@@ -80,20 +81,20 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
         }
 
         rootView.findViewById(R.id.weight_button).setOnClickListener {
-            //TODO
+                val intent = Intent(activity, WeightActivity::class.java)
+                activity.startActivity(intent)
+                activity.finish()
         }
 
         when (this) {
             is HomeFragment -> {
                 rootView.home_button.apply {
                     setBackgroundColor(Color.parseColor("#FF4081"))
-//                    isClickable = false
                 }
             }
             is AlimentsFragment ->
                 rootView.aliments_button.apply {
                     setBackgroundColor(Color.parseColor("#FF4081"))
-//                    isClickable = false
                 }
         }
     }

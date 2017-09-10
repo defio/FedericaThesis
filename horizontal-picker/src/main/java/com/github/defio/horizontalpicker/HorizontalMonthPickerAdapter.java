@@ -20,9 +20,8 @@ import static com.github.defio.horizontalpicker.utils.DateTimeExtKt.isCurrentMon
 
 
 /**
- * Created by ndefiorenze on 22/02/2017.
+ * Created by ndefiorenze on 09/10/2017.
  */
-
 public class HorizontalMonthPickerAdapter extends RecyclerView.Adapter<HorizontalMonthPickerAdapter.ViewHolder> {
 
     private final int mBackgroundColor;
