@@ -101,6 +101,7 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
     private fun initDatePicker(rootView: View) {
         val datePicker = rootView.datePicker
         datePicker
+                .showTodayButton(false)
                 .setListener { dateSelected -> presenter.changeDate(dateSelected) }
                 .init()
         datePicker.setDate(DateTime.now())
