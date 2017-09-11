@@ -5,11 +5,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
+import com.viero.federica.application_commons.format
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.settings.Settings
 import com.viero.federica.weight.WeightContract
 import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
+
 
 /**
  * <br/>
@@ -36,9 +39,33 @@ class WeightPresenterImpl : WeightContract.WeightPresenter {
                 view?.showNoMeasurementsView()
                 view?.hideMeasurementsView()
             } else {
-                view?.hideNoMeasurementsView()
-                view?.showMeasurementsView()
-                println(dataSnapshot)
+                val map: Map<String, Long> = try {
+                    dataSnapshot.value as Map<String, Long>
+                } catch (e: Exception) {
+                    view?.showNoMeasurementsView()
+                    view?.hideMeasurementsView()
+
+                    return
+                }
+
+
+                val convertedMap = map.mapKeys {
+                    val formatter = DateTimeFormat.forPattern("dd-MM-yyyy")
+                    formatter.parseDateTime(it.key) }
+                        .filter { it.key.monthOfYear() == currentDate.monthOfYear() && it.key.year() == currentDate.year() }
+                        .toList()
+                        .sortedBy { (key, _) -> key }
+                        .toMap()
+                if (convertedMap.isEmpty()) {
+                    view?.showNoMeasurementsView()
+                    view?.hideMeasurementsView()
+
+                } else {
+                    view?.refreshRecyclerView(convertedMap)
+
+                    view?.hideNoMeasurementsView()
+                    view?.showMeasurementsView()
+                }
             }
         }
     }
@@ -59,14 +86,24 @@ class WeightPresenterImpl : WeightContract.WeightPresenter {
     }
 
     override fun fetchMeasurement() {
-        if (currentDate.isCurrentMonth()){
+        if (currentDate.isCurrentMonth()) {
             view?.showNewMeasurementButton()
-        }else{
+        } else {
             view?.hideNewMeasurementButton()
         }
-//
+
         queryMeasurements().removeEventListener(eventListener)
         queryMeasurements().addListenerForSingleValueEvent(eventListener)
+    }
+
+    override fun storeWeight(weight: Int) {
+        Database.getChild(DatabaseEntity.WEIGHTS, Settings.getUserId()!!, currentDate.format()
+        ).setValue(weight)
+
+    }
+
+    override public fun refreshList() {
+        fetchMeasurement()
     }
 
     private fun queryMeasurements(): Query =

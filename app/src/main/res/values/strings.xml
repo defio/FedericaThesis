@@ -12,4 +12,7 @@
     <string name="aliments">Alimenti</string>
     <string name="weight.no.measurement">Nessuna misurazione</string>
     <string name="new.weight.measurement">Inserisci nuovo peso</string>
+    <string name="fill_with_weight">Inserisci il tuo peso per il giorno corrente</string>
+    <string name="weight.alert.insert">inserisci</string>
+    <string name="weight.alert.cancel">annulla</string>
 </resources>
