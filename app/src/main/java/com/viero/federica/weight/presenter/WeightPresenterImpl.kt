@@ -48,7 +48,6 @@ class WeightPresenterImpl : WeightContract.WeightPresenter {
                     return
                 }
 
-
                 val convertedMap = map.mapKeys {
                     val formatter = DateTimeFormat.forPattern("dd-MM-yyyy")
                     formatter.parseDateTime(it.key) }
