@@ -45,7 +45,13 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
 
         private fun updateFoodMap(prevChildKey: String?, dataSnapshot: DataSnapshot?) {
             val newKey = dataSnapshot?.key
-            val food = dataSnapshot?.getValue(Food::class.java) as Food
+            val food: Food
+            try {
+                food = dataSnapshot?.getValue(Food::class.java) as Food
+            } catch (e: DatabaseException) {
+                FirebaseCrash.log(e.toString())
+                return
+            }
             if (isFoodToFilterOut(food)) {
                 return
             }

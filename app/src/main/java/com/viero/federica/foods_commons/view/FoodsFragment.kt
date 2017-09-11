@@ -54,10 +54,8 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
         initDatePicker(rootView)
 
         val recyclerView = rootView.findViewById(R.id.recycler_view) as RecyclerView
-        recyclerView.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+        recyclerView.layoutManager = GridLayoutManager(activity, 1, GridLayoutManager.VERTICAL, false)
         recyclerView.adapter = foodsAdapter
-
-
 
         presenter.fetchFoods()
         return rootView
