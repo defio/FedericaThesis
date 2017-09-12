@@ -31,4 +31,5 @@ fun AppCompatActivity.showActionBar() {
 fun FragmentActivity.start(destinationClass: Class<out Activity>) {
     val intent = Intent(this, destinationClass)
     this.startActivity(intent)
+    overridePendingTransition (0,0)
 }

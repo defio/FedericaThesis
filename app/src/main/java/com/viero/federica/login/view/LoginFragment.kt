@@ -78,6 +78,7 @@ class LoginFragment : Fragment(), LoginView {
 
     override fun loginDone() {
         activity.finish()
+        activity.overridePendingTransition(0, 0)
         activity.start(HomeActivity::class.java)
     }
 

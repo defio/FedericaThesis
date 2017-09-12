@@ -2,7 +2,6 @@ package com.viero.federica.weight.view
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -93,16 +92,18 @@ class WeightFragment : Fragment(), WeightContract.WeightView {
             val intent = Intent(activity, HomeActivity::class.java)
             activity.startActivity(intent)
             activity.finish()
+            activity.overridePendingTransition(0, 0)
         }
 
         rootView.aliments_button.setOnClickListener {
             val intent = Intent(activity, AlimentsActivity::class.java)
             activity.startActivity(intent)
             activity.finish()
+            activity.overridePendingTransition(0, 0)
         }
 
         rootView.findViewById(R.id.weight_button).apply {
-            setBackgroundColor(Color.parseColor("#FF4081"))
+            setBackgroundResource(R.color.colorPrimary)
             isClickable = false
         }
 

@@ -2,8 +2,8 @@ package com.viero.federica.foods_commons.view
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -65,37 +65,38 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
     private fun initTopButtons(rootView: View) {
         rootView.home_button.setOnClickListener {
             if (this !is HomeFragment) {
-                val intent = Intent(activity, HomeActivity::class.java)
-                activity.startActivity(intent)
-                activity.finish()
+                start(HomeActivity::class.java)
             }
         }
 
         rootView.aliments_button.setOnClickListener {
             if (this !is AlimentsFragment) {
-                val intent = Intent(activity, AlimentsActivity::class.java)
-                activity.startActivity(intent)
-                activity.finish()
+                start(AlimentsActivity::class.java)
             }
         }
 
         rootView.findViewById(R.id.weight_button).setOnClickListener {
-                val intent = Intent(activity, WeightActivity::class.java)
-                activity.startActivity(intent)
-                activity.finish()
+            start(WeightActivity::class.java)
         }
 
         when (this) {
             is HomeFragment -> {
                 rootView.home_button.apply {
-                    setBackgroundColor(Color.parseColor("#FF4081"))
+                    setBackgroundResource(R.color.colorPrimary)
                 }
             }
             is AlimentsFragment ->
                 rootView.aliments_button.apply {
-                    setBackgroundColor(Color.parseColor("#FF4081"))
+                    setBackgroundResource(R.color.colorPrimary)
                 }
         }
+    }
+
+    private fun start(clazz: Class<out AppCompatActivity>) {
+        val intent = Intent(activity, clazz)
+        activity.startActivity(intent)
+        activity.finish()
+        activity.overridePendingTransition(0, 0)
     }
 
     private fun initDatePicker(rootView: View) {
