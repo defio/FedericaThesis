@@ -48,6 +48,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
             val food: Food
             try {
                 food = dataSnapshot?.getValue(Food::class.java) as Food
+                food.key = dataSnapshot.key
             } catch (e: DatabaseException) {
                 FirebaseCrash.log(e.toString())
                 return

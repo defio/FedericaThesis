@@ -10,29 +10,24 @@ import com.viero.federica.database.model.Food
  * @author Nicola De Fiorenze
  */
 class FoodsWithIntakes {
-    val foodsMap = mutableMapOf<String, FoodIntakers>() //key == food.name
+    private val foodsMap = mutableMapOf<String, FoodIntakers>() //key == food.key
 
     fun addFood(food: Food) {
-        foodsMap.put(food.name ?: "", FoodIntakers(food))
+        foodsMap.put(food.key ?: "", FoodIntakers(food))
     }
 
     fun updateIntakeForFood(food: Food, intake: String,counter: Int){
-        if(foodsMap[food.name]==null){
+        if(foodsMap[food.key]==null){
             addFood(food)
         }
-        foodsMap[food.name]?.let {
-            val foodWithIntake = it
-            foodWithIntake.updateCounter(intake,counter)
-        }
+        foodsMap[food.key]?.updateCounter(intake,counter)
     }
 
     fun  remove(food: String) {
         foodsMap.remove(food)
     }
 
-    fun getFoodAtPosition(position:Int): FoodIntakers {
-        return foodsMap.values.toList()[position]
-    }
+    fun getFoodAtPosition(position:Int): FoodIntakers = foodsMap.values.toList()[position]
 
     fun size():Int = foodsMap.size
 }
@@ -46,7 +41,7 @@ class FoodIntakers(val food: Food) {
 }
 
 class IntakesCounter {
-    val intakesCounter = mutableMapOf<String, Int>()
+    private val intakesCounter = mutableMapOf<String, Int>()
 
     fun getCounter(intake: String) = intakesCounter[intake] ?: 0
 
