@@ -2,4 +2,5 @@
 <resources>
     <dimen name="margin">20dp</dimen>
     <dimen name="half_margin">10dp</dimen>
+    <dimen name="increment_decrement_button_size">60dp</dimen>
 </resources>
