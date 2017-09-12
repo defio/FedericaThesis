@@ -19,7 +19,7 @@ import org.joda.time.format.DateTimeFormat
  */
 class WeightAdapter : RecyclerView.Adapter<WeightAdapter.WeightViewHolder>() {
 
-    private var weights: Map<DateTime,Long>? = null
+    private var weights: Map<DateTime,Double>? = null
 
     override fun onBindViewHolder(holder: WeightViewHolder, position: Int) {
         weights?.toList()?.get(position)?.let {
@@ -38,7 +38,7 @@ class WeightAdapter : RecyclerView.Adapter<WeightAdapter.WeightViewHolder>() {
     override fun getItemCount(): Int = weights?.size ?: 0
 
 
-    fun setDataSet(weights: Map<DateTime,Long>) {
+    fun setDataSet(weights: Map<DateTime,Double>) {
         this.weights = weights
     }
 

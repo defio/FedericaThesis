@@ -39,8 +39,8 @@ class WeightPresenterImpl : WeightContract.WeightPresenter {
                 view?.showNoMeasurementsView()
                 view?.hideMeasurementsView()
             } else {
-                val map: Map<String, Long> = try {
-                    dataSnapshot.value as Map<String, Long>
+                val map: Map<String, Double> = try {
+                    dataSnapshot.value as Map<String, Double>
                 } catch (e: Exception) {
                     view?.showNoMeasurementsView()
                     view?.hideMeasurementsView()
@@ -95,13 +95,13 @@ class WeightPresenterImpl : WeightContract.WeightPresenter {
         queryMeasurements().addListenerForSingleValueEvent(eventListener)
     }
 
-    override fun storeWeight(weight: Int) {
+    override fun storeWeight(weight: Double) {
         Database.getChild(DatabaseEntity.WEIGHTS, Settings.getUserId()!!, currentDate.format()
         ).setValue(weight)
 
     }
 
-    override public fun refreshList() {
+    override fun refreshList() {
         fetchMeasurement()
     }
 

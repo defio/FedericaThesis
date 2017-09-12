@@ -22,14 +22,14 @@ interface WeightContract{
         fun showMeasurementsView()
         fun showNewMeasurementButton()
         fun hideNewMeasurementButton()
-        fun refreshRecyclerView(map: Map<DateTime, Long>)
+        fun refreshRecyclerView(map: Map<DateTime, Double>)
     }
 
     interface WeightPresenter : Presenter<WeightView>{
         fun changeDate(dateSelected: DateTime)
 
         fun fetchMeasurement()
-        fun storeWeight(weight: Int)
+        fun storeWeight(weight: Double)
         fun refreshList()
     }
 }

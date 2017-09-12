@@ -57,7 +57,7 @@ class WeightFragment : Fragment(), WeightContract.WeightView {
         presenter.fetchMeasurement()
     }
 
-    override fun refreshRecyclerView(map: Map<DateTime, Long>) {
+    override fun refreshRecyclerView(map: Map<DateTime, Double>) {
         weightsAdapter.setDataSet(map)
         weightsAdapter.notifyDataSetChanged()
     }
@@ -66,7 +66,7 @@ class WeightFragment : Fragment(), WeightContract.WeightView {
         super.onStart()
         insert_new_measurement_button.setOnClickListener { view ->
             val editText = EditText(view.context)
-            editText.inputType = InputType.TYPE_CLASS_NUMBER
+            editText.inputType = (InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL)
             AlertDialog.Builder(view.context)
                     .setMessage(R.string.fill_with_weight)
                     .setView(editText)
@@ -74,7 +74,7 @@ class WeightFragment : Fragment(), WeightContract.WeightView {
                             R.string.weight_alert_insert), { dialog, whichButton ->
                         val weightString = editText.text.toString()
                         try {
-                            presenter.storeWeight(weightString.toInt())
+                            presenter.storeWeight(weightString.toDouble())
                             presenter.refreshList()
                         } catch (e: Exception) {
                             FirebaseCrash.log(e.toString())
