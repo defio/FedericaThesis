@@ -193,7 +193,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
 
     private fun updateQuantity(value: Int, foodKey: String, slots: Map<String, Long>) {
         val orderedSlots = orderSlotMap(slots)
-        view?.showMultiselectDialog(orderedSlots.keys.toTypedArray(), null) { selected ->
+        view?.showMultiselectDialog(orderedSlots.keys.map { it.toUpperCase() }.toTypedArray(), null) { selected ->
             val slotsToUpdate = mutableMapOf<String, Long>()
             val oldSlots = orderedSlots.toList()
             selected.filterValues { mapValue -> mapValue }
