@@ -74,13 +74,13 @@ class FoodsAdapter(private val intakeListener: IntakeListener) : RecyclerView.Ad
                 val oldQuantity = holder.counterTextView.text.toString().toInt()
                 val newQuantity = oldQuantity - 1
                 if (newQuantity >= 0) {
-                    intakeListener.decreaseQuantity(newQuantity, foodEntry.food.key ?: "")
+                    intakeListener.decreaseQuantity(newQuantity, foodEntry.food)
                 }
             }
             holder.plusButton.setOnClickListener {
                 val oldQuantity = holder.counterTextView.text.toString().toInt()
                 val newQuantity = oldQuantity + 1
-                intakeListener.increaseQuantity(newQuantity, foodEntry.food.key ?: "")
+                intakeListener.increaseQuantity(newQuantity, foodEntry.food)
             }
         }
 

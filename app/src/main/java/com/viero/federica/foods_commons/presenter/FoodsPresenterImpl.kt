@@ -11,6 +11,7 @@ import com.viero.federica.foods_commons.FoodsContract.FoodsPresenter
 import com.viero.federica.home.model.FoodsWithIntakes
 import com.viero.federica.settings.Settings
 import org.joda.time.DateTime
+import java.util.*
 
 /**
  * Project: federica<br/>
@@ -140,9 +141,23 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
         onDone()
     }
 
-    override fun increaseQuantity(value: Int, foodKey: String) {
+    override fun increaseQuantity(value: Int, food: Food) {
+        if(food.hasSlotsChooser) {
+            increaseQuantityWithSlotsChooser(food)
+        }else{
+            updateQuantityWithoutSlotsChooser(value,food)
+        }
+    }
+
+    private fun updateQuantityWithoutSlotsChooser(value: Int, food: Food) {
         Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
-                foodKey).addListenerForSingleValueEvent(object : ValueEventListener {
+                food.key, "default").setValue(value)
+        fetchFoods()
+    }
+
+    private fun increaseQuantityWithSlotsChooser(food: Food) {
+        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+                food.key).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError?) {
                 FirebaseCrash.log(databaseError?.toString())
             }
@@ -153,7 +168,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
                 @Suppress("UNCHECKED_CAST")
                 val fetchedSlots = dataSnapshot?.let {
                     if (it.value != null) {
-                        (it.value as java.util.HashMap<String, Long>)
+                        (it.value as HashMap<String, Long>)
                     } else {
                         null
                     }
@@ -166,14 +181,22 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
                 }
                 fetchedSlots.forEach { (slot, value) -> slots.put(slot, value) }
 
-                updateQuantity(1, foodKey, slots)
+                updateQuantity(1, food.key, slots)
             }
         })
     }
 
-    override fun decreaseQuantity(value: Int, foodKey: String) {
+    override fun decreaseQuantity(value: Int, food: Food) {
+        if(food.hasSlotsChooser) {
+            decreaseQuantityWithSlotChooser(food)
+        }else{
+            updateQuantityWithoutSlotsChooser(value, food)
+        }
+    }
+
+    private fun decreaseQuantityWithSlotChooser(food: Food) {
         Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
-                foodKey).addListenerForSingleValueEvent(object : ValueEventListener {
+                food.key).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError?) {
                 FirebaseCrash.log(databaseError?.toString())
             }
@@ -182,11 +205,11 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
                 println(dataSnapshot?.value)
 
                 val slots = dataSnapshot?.let {
-                    (it.value as java.util.HashMap<String, Long>).filterValues { mapValue ->
+                    (it.value as HashMap<String, Long>).filterValues { mapValue ->
                         mapValue > 0
                     }
                 } ?: emptyMap()
-                updateQuantity(-1, foodKey, slots)
+                updateQuantity(-1, food.key, slots)
             }
         })
     }

@@ -11,8 +11,9 @@ package com.viero.federica.database.model
 data class Food(var name: String? = null,
                 var image: String? = null,
                 var color: String? = null,
-                var defaultInHome: Boolean = false) {
+                var defaultInHome: Boolean = false,
+                var hasSlotsChooser: Boolean = true) {
 
-    var key: String? = name
+    var key: String = name?:""
 
 }

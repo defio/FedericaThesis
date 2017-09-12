@@ -10,6 +10,7 @@ import android.view.View
 import com.viero.federica.R
 import com.viero.federica.aliments.view.AlimentsActivity
 import com.viero.federica.aliments.view.AlimentsFragment
+import com.viero.federica.database.model.Food
 import com.viero.federica.foods_commons.FoodsContract
 import com.viero.federica.foods_commons.FoodsContract.FoodsPresenter
 import com.viero.federica.home.adapter.FoodsAdapter
@@ -34,12 +35,12 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
     private val presenter: FoodsPresenter<FoodsContract.FoodsView> by lazy { getHomePresenter<FoodsContract.FoodsView>() }
 
     private val foodsAdapter = FoodsAdapter(object : IntakeListener {
-        override fun increaseQuantity(value: Int, foodKey: String) {
-            presenter.increaseQuantity(value, foodKey)
+        override fun increaseQuantity(value: Int, food: Food) {
+            presenter.increaseQuantity(value, food)
         }
 
-        override fun decreaseQuantity(value: Int, foodKey: String) {
-            presenter.decreaseQuantity(value, foodKey)
+        override fun decreaseQuantity(value: Int, food: Food) {
+            presenter.decreaseQuantity(value, food)
 
         }
     })

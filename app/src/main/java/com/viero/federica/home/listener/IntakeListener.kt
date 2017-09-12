@@ -1,5 +1,7 @@
 package com.viero.federica.home.listener
 
+import com.viero.federica.database.model.Food
+
 /**
  * Project: federica<br/>
  * <br/>
@@ -9,6 +11,6 @@ package com.viero.federica.home.listener
  */
 @FunctionalInterface
 interface IntakeListener{
-    fun increaseQuantity(value: Int, foodKey: String)
-    fun decreaseQuantity(value: Int, foodKey: String)
+    fun increaseQuantity(value: Int, food: Food)
+    fun decreaseQuantity(value: Int, food: Food)
 }
