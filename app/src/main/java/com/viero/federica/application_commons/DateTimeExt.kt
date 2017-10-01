@@ -10,4 +10,6 @@ import org.joda.time.format.DateTimeFormat
  *
  * @author Nicola De Fiorenze
  */
-fun DateTime.format() = DateTimeFormat.forPattern("dd-MM-yyyy").print(this)
+fun DateTime.dateFormat() = DateTimeFormat.forPattern("dd-MM-yyyy").print(this)
+
+fun DateTime.dateTimeFormat() = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").print(this)

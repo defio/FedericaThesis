@@ -2,7 +2,7 @@ package com.viero.federica.foods_commons.presenter
 
 import com.google.firebase.crash.FirebaseCrash
 import com.google.firebase.database.*
-import com.viero.federica.application_commons.format
+import com.viero.federica.application_commons.dateFormat
 import com.viero.federica.commons.Tracker
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
@@ -65,7 +65,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
                 foods.remove(newKey)
             }
             if (newKey != null) {
-                Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+                Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.dateFormat(),
                         newKey).addListenerForSingleValueEvent(
                         object : ValueEventListener {
                             override fun onCancelled(databaseError: DatabaseError?) {
@@ -136,7 +136,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
 
     override fun updateQuantity(foodKey: String, slots: Map<String, Long>, onDone: () -> Unit) {
         slots.forEach { (slot, value) ->
-            Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+            Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.dateFormat(),
                     foodKey, slot).setValue(value)
         }
         onDone()
@@ -151,14 +151,15 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
     }
 
     private fun updateQuantityWithoutSlotsChooser(value: Int, food: Food) {
-        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.dateFormat(),
                 food.key, "default").setValue(value)
         fetchFoods()
-        Tracker.trackAtomicOperation(Tracker.AtomicOperation.UPDATE_QUANTITY, from = this.javaClass, details = "Food: ${food.key} (${food.name})")
+        Tracker.trackAtomicOperation(Tracker.AtomicOperation.UPDATE_QUANTITY, from = this.javaClass,
+                details = "Food: ${food.key}; For date ${currentDate.dateFormat()}")
     }
 
     private fun increaseQuantityWithSlotsChooser(food: Food) {
-        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.dateFormat(),
                 food.key).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError?) {
                 FirebaseCrash.log(databaseError?.toString())
@@ -197,7 +198,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
     }
 
     private fun decreaseQuantityWithSlotChooser(food: Food) {
-        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
+        Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.dateFormat(),
                 food.key).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(databaseError: DatabaseError?) {
                 FirebaseCrash.log(databaseError?.toString())
@@ -224,12 +225,13 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
                     .forEach { slotsToUpdate.put(oldSlots[it].first, oldSlots[it].second + value) }
             updateQuantity(foodKey, slotsToUpdate) {
                 fetchFoods()
-            }
 
             Tracker.trackAtomicOperation(
                     if (value > 0) Tracker.AtomicOperation.INCREASE_QUANTITY else Tracker.AtomicOperation.DECREASE_QUANTITY,
                     from = this.javaClass,
-                    details = "Food: $foodKey, Slots: $slots")
+                    details = "Food: $foodKey; Slots: $slotsToUpdate; For date: ${currentDate.dateFormat()} ")
+            }
+
         }
     }
 

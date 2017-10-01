@@ -5,7 +5,8 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.Query
 import com.google.firebase.database.ValueEventListener
-import com.viero.federica.application_commons.format
+import com.viero.federica.application_commons.dateFormat
+import com.viero.federica.commons.Tracker
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.settings.Settings
@@ -96,9 +97,11 @@ class WeightPresenterImpl : WeightContract.WeightPresenter {
     }
 
     override fun storeWeight(weight: Double) {
-        Database.getChild(DatabaseEntity.WEIGHTS, Settings.getUserId()!!, currentDate.format()
+        Database.getChild(DatabaseEntity.WEIGHTS, Settings.getUserId()!!, currentDate.dateFormat()
         ).setValue(weight)
 
+        Tracker.trackAtomicOperation(Tracker.AtomicOperation.WEIGHT_INSERT, from = this.javaClass,
+                details = "Value: $weight")
     }
 
     override fun refreshList() {
