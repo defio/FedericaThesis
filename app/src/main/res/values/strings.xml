@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">federica</string>
+    <string name="app_name">Salus</string>
 
     <string name="login.name">Nome</string>
     <string name="login.surname">Cognome</string>
