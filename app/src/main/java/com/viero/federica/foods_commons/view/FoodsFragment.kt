@@ -2,7 +2,7 @@ package com.viero.federica.foods_commons.view
 
 import android.app.AlertDialog
 import android.content.Intent
-import android.support.v4.app.Fragment
+import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,6 +10,7 @@ import android.view.View
 import com.viero.federica.R
 import com.viero.federica.aliments.view.AlimentsActivity
 import com.viero.federica.aliments.view.AlimentsFragment
+import com.viero.federica.commons.TrackableFragment
 import com.viero.federica.database.model.Food
 import com.viero.federica.foods_commons.FoodsContract
 import com.viero.federica.foods_commons.FoodsContract.FoodsPresenter
@@ -30,7 +31,7 @@ import org.joda.time.DateTime
  *
  * @author Nicola De Fiorenze
  */
-abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
+abstract class FoodsFragment : TrackableFragment(), FoodsContract.FoodsView {
 
     private val presenter: FoodsPresenter<FoodsContract.FoodsView> by lazy { getHomePresenter<FoodsContract.FoodsView>() }
 
@@ -41,7 +42,6 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
 
         override fun decreaseQuantity(value: Int, food: Food) {
             presenter.decreaseQuantity(value, food)
-
         }
     })
 
@@ -82,12 +82,14 @@ abstract class FoodsFragment : Fragment(), FoodsContract.FoodsView {
         when (this) {
             is HomeFragment -> {
                 rootView.home_button.apply {
-                    setBackgroundResource(R.color.colorPrimary)
+                    setBackgroundResource(R.color.selectedTab)
+                    setTextColor(Color.BLACK)
                 }
             }
             is AlimentsFragment ->
                 rootView.aliments_button.apply {
-                    setBackgroundResource(R.color.colorPrimary)
+                    setBackgroundResource(R.color.selectedTab)
+                    setTextColor(Color.BLACK)
                 }
         }
     }

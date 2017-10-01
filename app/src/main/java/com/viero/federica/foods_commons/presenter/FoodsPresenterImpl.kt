@@ -3,6 +3,7 @@ package com.viero.federica.foods_commons.presenter
 import com.google.firebase.crash.FirebaseCrash
 import com.google.firebase.database.*
 import com.viero.federica.application_commons.format
+import com.viero.federica.commons.Tracker
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.database.model.Food
@@ -142,10 +143,10 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
     }
 
     override fun increaseQuantity(value: Int, food: Food) {
-        if(food.hasSlotsChooser) {
+        if (food.hasSlotsChooser) {
             increaseQuantityWithSlotsChooser(food)
-        }else{
-            updateQuantityWithoutSlotsChooser(value,food)
+        } else {
+            updateQuantityWithoutSlotsChooser(value, food)
         }
     }
 
@@ -153,6 +154,7 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
         Database.getChild(DatabaseEntity.INTAKES, Settings.getUserId()!!, currentDate.format(),
                 food.key, "default").setValue(value)
         fetchFoods()
+        Tracker.trackAtomicOperation(Tracker.AtomicOperation.UPDATE_QUANTITY, from = this.javaClass, details = "Food: ${food.key} (${food.name})")
     }
 
     private fun increaseQuantityWithSlotsChooser(food: Food) {
@@ -187,9 +189,9 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
     }
 
     override fun decreaseQuantity(value: Int, food: Food) {
-        if(food.hasSlotsChooser) {
+        if (food.hasSlotsChooser) {
             decreaseQuantityWithSlotChooser(food)
-        }else{
+        } else {
             updateQuantityWithoutSlotsChooser(value, food)
         }
     }
@@ -202,8 +204,6 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot?) {
-                println(dataSnapshot?.value)
-
                 val slots = dataSnapshot?.let {
                     (it.value as HashMap<String, Long>).filterValues { mapValue ->
                         mapValue > 0
@@ -225,6 +225,11 @@ abstract class FoodsPresenterImpl<in T : FoodsContract.FoodsView> : FoodsPresent
             updateQuantity(foodKey, slotsToUpdate) {
                 fetchFoods()
             }
+
+            Tracker.trackAtomicOperation(
+                    if (value > 0) Tracker.AtomicOperation.INCREASE_QUANTITY else Tracker.AtomicOperation.DECREASE_QUANTITY,
+                    from = this.javaClass,
+                    details = "Food: $foodKey, Slots: $slots")
         }
     }
 

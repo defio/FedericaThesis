@@ -2,8 +2,8 @@ package com.viero.federica.weight.view
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.InputType
@@ -12,6 +12,8 @@ import android.widget.EditText
 import com.google.firebase.crash.FirebaseCrash
 import com.viero.federica.R
 import com.viero.federica.aliments.view.AlimentsActivity
+import com.viero.federica.commons.TrackableFragment
+import com.viero.federica.commons.Tracker
 import com.viero.federica.home.view.HomeActivity
 import com.viero.federica.weight.WeightContract
 import com.viero.federica.weight.adapter.WeightAdapter
@@ -29,11 +31,11 @@ import org.joda.time.DateTime
  *
  * @author Nicola De Fiorenze
  */
-class WeightFragment : Fragment(), WeightContract.WeightView {
+class WeightFragment : TrackableFragment(), WeightContract.WeightView {
 
 
     private val presenter: WeightContract.WeightPresenter by lazy { WeightPresenterImpl() }
-    private val weightsAdapter by lazy {WeightAdapter()}
+    private val weightsAdapter by lazy { WeightAdapter() }
 
     override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: android.os.Bundle?): android.view.View? {
         val rootView = inflater.inflate(R.layout.weight_fragment, container, false)
@@ -88,22 +90,31 @@ class WeightFragment : Fragment(), WeightContract.WeightView {
     }
 
     private fun initTopButtons(rootView: View) {
-        rootView.home_button.setOnClickListener {
-            val intent = Intent(activity, HomeActivity::class.java)
-            activity.startActivity(intent)
-            activity.finish()
-            activity.overridePendingTransition(0, 0)
+        rootView.home_button.apply {
+            setOnClickListener {
+                val intent = Intent(activity, HomeActivity::class.java)
+                activity.startActivity(intent)
+                activity.finish()
+                activity.overridePendingTransition(0, 0)
+            }
+            setTextColor(Color.WHITE)
         }
 
-        rootView.aliments_button.setOnClickListener {
-            val intent = Intent(activity, AlimentsActivity::class.java)
-            activity.startActivity(intent)
-            activity.finish()
-            activity.overridePendingTransition(0, 0)
+
+        rootView.aliments_button.apply {
+            setOnClickListener {
+                val intent = Intent(activity, AlimentsActivity::class.java)
+                activity.startActivity(intent)
+                activity.finish()
+                activity.overridePendingTransition(0, 0)
+            }
+            setTextColor(Color.WHITE)
         }
 
-        rootView.findViewById(R.id.weight_button).apply {
-            setBackgroundResource(R.color.colorPrimary)
+
+        rootView.weight_button.apply {
+            setBackgroundResource(R.color.selectedTab)
+            setTextColor(Color.BLACK)
             isClickable = false
         }
 
@@ -140,6 +151,10 @@ class WeightFragment : Fragment(), WeightContract.WeightView {
 
     override fun hideNewMeasurementButton() {
         insert_new_measurement_button.visibility = View.INVISIBLE
+    }
+
+    override fun trackFragmentLifeInterval(startTimestamp: DateTime, finishDateTime: DateTime) {
+        Tracker.trackIntervalOperation(Tracker.IntervalOperation.WEIGHT_LIFE_CYCLE, startTimestamp, finishDateTime)
     }
 
     override fun onDestroy() {

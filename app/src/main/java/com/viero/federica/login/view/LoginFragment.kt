@@ -21,7 +21,7 @@ import com.viero.federica.login.presenter.LoginPresenterImpl
  */
 class LoginFragment : Fragment(), LoginView {
 
-    var okButton: Button? = null
+    private var okButton: Button? = null
 
     companion object {
         fun newInstance() = com.viero.federica.login.view.LoginFragment()
@@ -29,7 +29,7 @@ class LoginFragment : Fragment(), LoginView {
 
     private val presenter: com.viero.federica.login.LoginContract.LoginPresenter by lazy { getLoginPresenter() }
 
-    fun getLoginPresenter(): com.viero.federica.login.LoginContract.LoginPresenter = LoginPresenterImpl()
+    private fun getLoginPresenter(): com.viero.federica.login.LoginContract.LoginPresenter = LoginPresenterImpl()
 
     override fun onCreateView(inflater: android.view.LayoutInflater, container: android.view.ViewGroup?, savedInstanceState: android.os.Bundle?): android.view.View? {
         val rootView = inflater.inflate(R.layout.login_fragment, container, false)

@@ -1,12 +1,12 @@
 package com.viero.federica.login.presenter
 
+import com.viero.federica.commons.Tracker
 import com.viero.federica.database.Database
 import com.viero.federica.database.DatabaseEntity
 import com.viero.federica.login.LoginContract.LoginPresenter
 import com.viero.federica.login.LoginContract.LoginView
 import com.viero.federica.login.model.User
 import com.viero.federica.settings.Settings
-import com.viero.federica.settings.SettingsKey
 import java.util.*
 
 /**
@@ -42,6 +42,7 @@ class LoginPresenterImpl : LoginPresenter {
         val userUUID = UUID.randomUUID().toString()
 
         Settings.setUserId(userUUID)
+        Tracker.setUserId(userUUID)
         Database.getChild(DatabaseEntity.USERS)
                 .child(userUUID)
                 .setValue(User(userName!!, userSurname!!))
